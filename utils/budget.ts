@@ -1,17 +1,15 @@
-import { NextResponse } from "next/server";
+export function calculateBudget(transactions: any[]) {
+  let spent = 0;
 
-export async function POST(request: Request) {
-  const { budget, spent } = await request.json();
+  transactions.forEach((t: any) => {
+    spent += Math.abs(t.amount);
+  });
 
+  const budget = 50000; // Dummy fixed budget
   const remaining = budget - spent;
 
-  return NextResponse.json({
+  return {
     budget,
-    spent,
     remaining,
-  });
-}
-
-export function GET() {
-  return NextResponse.json({ message: "Only POST allowed" });
+  };
 }

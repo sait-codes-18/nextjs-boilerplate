@@ -1,17 +1,12 @@
-import { NextResponse } from "next/server";
-
-export async function POST(request: Request) {
-  const { transactions } = await request.json();
-
+export function calculateMood(transactions: any[]) {
   let score = 0;
-  transactions.forEach((t: any) => (score += t.amount));
 
-  return NextResponse.json({
+  transactions.forEach((t: any) => {
+    score += t.amount; // expenses negative, income positive
+  });
+
+  return {
     mood: score >= 0 ? "Happy" : "Neutral",
     score,
-  });
-}
-
-export function GET() {
-  return NextResponse.json({ message: "Only POST allowed" });
+  };
 }

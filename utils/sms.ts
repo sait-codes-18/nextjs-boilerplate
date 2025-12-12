@@ -1,29 +1,19 @@
 export function parseSMS(body: any) {
   try {
-    const text = body.body || "";
+    const { message } = body;
 
-    // Extract amount
-    const amountMatch = text.match(/Rs\.?\s?(\d+)/i);
-    const amount = amountMatch ? parseInt(amountMatch[1]) : 0;
+    if (!message || typeof message !== "string") {
+      throw new Error("Invalid SMS text");
+    }
 
-    // Extract merchant
-    const merchantMatch = text.match(/spent at (.+?) using/i);
-    const merchant = merchantMatch ? merchantMatch[1] : "Unknown";
-
-    // Categorize
-    let category = "Other";
-    if (merchant.toLowerCase().includes("zomato")) category = "Food";
-
+    // Dummy parser logic for now
     return {
-      from: body.from || "",
-      timestamp: body.timestamp || Date.now(),
-      amount,
-      merchant,
-      category,
-      raw: text,
+      original: message,
+      amount: Math.floor(Math.random() * 5000),
+      category: "General",
     };
   } catch (err) {
-    console.error("Parse Error:", err);
-    throw new Error("Invalid SMS Format");
+    console.error("parseSMS error:", err);
+    return null;
   }
 }
